@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<!--指定 th 命名空间，让 Thymeleaf 标准表达式可以被解析和执行-->
+<!--th不是固定的，可以指定其它的命名空间，只不过大部分情况下用th-->
+<!--表示程序中出现的 th 开头的后面代码都是 Thymeleaf语法，需要被 Thymeleaf识别-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title> ok page</title>
+</head>
+<body>
+<h1>OK!</h1>
+<div th:text="${session.x}"></div>
+<div th:text="${session.session}"></div>
+<div id="app"></div>
+<button id="a">获取id为1的学生信息</button>
+<script type="text/javascript">
+    window.onload=function () {
+        document.getElementById("a").onclick=function () {
+            //创建Ajax对象
+            var xhr=new XMLHttpRequest();
+            //注册回调函数
+            xhr.onreadystatechange=function () {
+                if (xhr.readyState==4){
+                    if (xhr.status==200){
+                        document.getElementById("app").innerHTML=this.responseText
+
+                    }
+                }
+
+            }
+            //开启通道
+            xhr.open("GET","/springmvc/user2/1",true)
+            //发送请求
+            xhr.send()
+        }
+
+    }
+
+</script>
+</body>
+</html>

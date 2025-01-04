@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>首页</title>
+    <!--<script th:src="@{/static/js/vue3.4.21.js}"></script>-->
+    <!--<script th:src="@{/static/js/axios.min.js}"></script>-->
+</head>
+<body>
+<h1>首页</h1>
+<hr>
+
+<div id="app">
+</div>
+<form  method="post">
+    <label>用户名:</label>
+    <input type="text" name="username" required>
+
+    <label>性别:</label>
+    <select name="gender" required>
+        <option value="">-- 请选择 --</option>
+        <option value="1">男</option>
+        <option value="0">女</option>
+    </select>
+
+    <label>邮箱:</label>
+    <input type="email" name="email" required>
+
+    <button id="btnPost" type="submit">保存</button>
+</form>
+<button id="a">获取消息</button>
+<script type="text/javascript">
+    window.onload=function () {
+        document.getElementById("a").onclick=function () {
+            //创建Ajax对象
+            var xhr=new XMLHttpRequest();
+            //注册回调函数
+            xhr.onreadystatechange=function () {
+              if (xhr.readyState==4){
+                  if (xhr.status==200){
+                      document.getElementById("app").innerHTML=this.responseText
+
+                  }
+              }  
+
+            }
+            //开启通道
+            xhr.open("GET","/springmvc/hello",true)
+            //发送请求
+            xhr.send()
+        }
+        
+    }
+
+</script>
+<button id="b">json</button>
+<script type="text/javascript">
+    var jsonObj = {"username":"zhangsan", "email":"1234"}
+    var jsondata=JSON.stringify({"username":"zhangsan", "email":"1234"})
+    window.onload=function () {
+        document.getElementById("b").onclick=function () {
+            //创建Ajax对象
+            var xhr=new XMLHttpRequest();
+            //注册回调函数
+            xhr.onreadystatechange=function () {
+                if (xhr.readyState==4){
+                    if (xhr.status==200){
+                        document.getElementById("app").innerHTML=this.responseText
+
+                    }
+                }
+
+            }
+            //开启通道
+            xhr.open("POST","/springmvc/ajax",true)
+            //发送请求
+            xhr.setRequestHeader("Content-Type","application/json")
+            xhr.send(jsondata)
+        }
+
+    }
+
+</script>
+
+
+</body>
+</html>
