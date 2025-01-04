@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<!--指定 th 命名空间，让 Thymeleaf 标准表达式可以被解析和执行-->
+<!--th不是固定的，可以指定其它的命名空间，只不过大部分情况下用th-->
+<!--表示程序中出现的 th 开头的后面代码都是 Thymeleaf语法，需要被 Thymeleaf识别-->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>restful</title>
+</head>
+<body>
+<h1>RESTFull风格</h1>
+<a th:href="@{/api/user/1}">根据id查询用户</a>
+<form th:action="@{/api/user}" method="post">
+    用户名：<input type="text" name="username"><br>
+    密码：<input type="password" name="password"><br>
+    <input type="submit" value="保存">
+</form>
+<br>
+<form th:action="@{/api/user}" method="post">
+    <!--隐藏域的方式提交-->
+    <input type="hidden" name="_method" value="put" >
+    用户名：<input type="text" name="username"><br>
+    密码：<input type="password" name="password"><br>
+    <input type="submit" value="修改">
+</form>
+<a th:href="@{/api/user/100}" onclick="del(event)">根据用户id进行删除</a>
+<form id="delfrom" method="post">
+    <input type="hidden" name="_method" value="delete">
+</form>
+<script>
+    function del(event) {
+        //获取表单
+        var delfrom=document.getElementById("delfrom");
+        //给表单的action赋值
+        delfrom.action=event.target.href;
+        //发送post请求提交表单
+        delfrom.submit();
+        //阻止超链接默认行为
+        event.preventDefault();
+
+    }
+</script>
+</body>
+</html>
