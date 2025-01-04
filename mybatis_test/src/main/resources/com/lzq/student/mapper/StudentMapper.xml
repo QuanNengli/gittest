@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lzq.student.mapper.StudentMapper">
+<resultMap id="sept1" type="StudentPojo">
+    <id property="sid" column="sid"/>
+    <result property="sname" column="sname"/>
+    <association property="classPojo"
+                 select="com.lzq.student.mapper.ClazzMapper.sept2"
+                 column="cid"/>
+</resultMap>
+    <select id="selectBySept" resultMap="sept1">
+        select sid,sname,cid from t_stu where sid=#{sid}
+    </select>
+    
+    
+<resultMap id="studentMap" type="StudentPojo">
+    <id property="sid" column="sid"/>
+    <result property="sname" column="sname"/>
+    <result property="classPojo.cid" column="cid"/>
+    <result property="classPojo.cname" column="cname"/>
+</resultMap>
+    <select id="selectStu" resultMap="studentMap">
+        select s.sid,s.sname,c.cid,c.cname
+        from t_stu s left join t_class c
+        on s.cid=c.cid
+    </select>
+
+    <select id="selectPage" resultType="StudentPojo">
+        select * from t_stu
+    </select>
+
+</mapper>

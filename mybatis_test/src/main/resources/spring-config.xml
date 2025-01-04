@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:c="http://www.springframework.org/schema/c"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd
+                           http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+                           http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+    <!--开启自动代理-->
+    <aop:aspectj-autoproxy proxy-target-class="false"></aop:aspectj-autoproxy>
+
+   <bean id="date" class="com.lzq.student.dao.DateFactory">
+       <property name="date" value="1998-02-06"/>
+   </bean>
+    <bean id="student1" class="com.lzq.student.dao.User">
+        <property name="birth" ref="date"/>
+    </bean>
+    <!--开启组件扫描-->
+    <context:component-scan base-package="com.lzq.student.dao,com.lzq.student.aop">
+
+    </context:component-scan>
+    <!--引入外部配置文件-->
+    <context:property-placeholder location="jdbc.properties"/>
+    <bean id="pro" class="com.lzq.student.pojo.StudentPojo">
+        <property name="sname" value="${jdbc.drvier}"/>
+    </bean>
+    <!--自动装配-->
+    <bean id="byName" class="com.lzq.student.services.SpringServices" autowire="byName"></bean>
+    <!--<bean id="user" class="com.lzq.student.dao.User"/>-->
+    <!--<bean id="byType" class="com.lzq.student.services.SpringServices" autowire="byType"></bean>-->
+
+
+    <util:properties id="prop">
+            <prop key="url">jdkslfk</prop>
+            <prop key="driver">sdfdf</prop>
+    </util:properties>
+    <bean id="dateSource2" class="com.lzq.student.dao.DateSource2">
+        <property name="properties" ref="prop"/>
+    </bean>
+
+    <bean id="dateSource1" class="com.lzq.student.dao.DateSource">
+        <property name="properties" ref="prop"/>
+    </bean>
+
+    <bean id="stuP" class="com.lzq.student.pojo.StudentPojo" p:sname="张三">
+    </bean>
+    <bean id="stuC" class="com.lzq.student.pojo.StudentPojo" c:sid="1" c:sname="李四" c:classPojo-ref="clazz">
+    </bean>
+    <bean id="clazz" class="com.lzq.student.pojo.ClassPojo" p:cid="1002" p:cname="高三2班"></bean>
+    <bean id="StudentBean" class="com.lzq.student.pojo.StudentPojo"/>
+    <bean id="UserDao" class="com.lzq.student.dao.User"/>
+    <bean id="UserServices" class="com.lzq.student.services.SpringServices">
+        <!--<property name="user" ref="UserDao"/>-->
+        <constructor-arg name="user" ref="UserDao"/>
+    </bean>
+
+</beans>
